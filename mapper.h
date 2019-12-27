@@ -1,0 +1,158 @@
+ 
+#ifndef P1_LIBRARY_H
+#define P1_LIBRARY_H
+
+#include <iostream>
+#include <string>
+#include <cstdio>
+#include <cctype>
+#include <fstream>
+#include <cassert> 
+#include <algorithm> 
+#include <vector>
+#include <map>
+using namespace std;
+
+
+//GLOBALS --------------------------------------------------------------------------------------------------------------
+// Location of resc folder
+const string resc = "/home/loris/Projects/Mapper/resc";
+
+// amount of time that airodump will run
+const string runTime = "120s";
+
+string password;
+string user;
+
+
+//Helper functions------------------------------------------------------------------------------------------------------
+
+map<string, string> known_devices; // known_devices[Mac] = Name
+
+//Changes a string to upper case
+string toUpperCase(string input){
+    transform(input.begin(), input.end(), input.begin(), ::toupper);
+    return input;
+}
+
+
+//Checks whether or not string in is a mac adress
+bool isMacAddress(string in){
+    in = toUpperCase(in);
+    if(int(in.length()) != 17) return false;
+    for(int i = 0; i < int(in.length()); i++){
+        char temp = in[i];
+        if((i-2)%3 == 0 && temp != ':')return false;
+    }
+    return true;
+}
+
+//returns the mac adress without the colons
+string strip_colons(string mac){
+    //9A:65:33:17:49:EE
+    //012           2
+    //9A65:33:17:49:EE
+    //01234         4
+    //9A6533:17:49:EE
+    //0123456       6
+    //9A653317:49:EE
+    //012345678     8
+    //9A65331749:EE
+    //01234567890   10
+    mac = toUpperCase(mac);
+    if(isMacAddress(mac)){
+        for(int i = 2; i < 11; i+=2){
+            mac = mac.substr(0, i) + mac.substr(i+1);
+        }
+    }
+    return mac;
+}//Done!
+
+//Gets the output of a command, needs the command to be valid
+string getCommandOutput(string command){
+    string tmpflname = "DeleteMe.txt";
+    command += " > " + tmpflname; 
+    system(command.c_str()); // cmd > Deleteme.txt
+    string out = "";
+    string temp;
+    ifstream fin(tmpflname);
+    for(int i = 0; fin >> temp; ++i) out += temp + " ";
+    command = "rm -f " + tmpflname;
+    system(command.c_str());
+    return out;
+}
+
+
+//Writes a command to an output file
+void writeCommandOutputToFile(const string  & fileName, string command){
+    command += " > " + fileName; 
+    system(command.c_str()); // cmd > Deleteme.txt
+}
+
+//Gets the vendor of a mac address, needs a valid mac, Either with colons or without.
+string getVendor(string mac){
+    return getCommandOutput("/home/loris/Scripts/path/maclookup " + mac);
+}
+
+
+//runs a valid command with sudo before it
+void sudo(const string & command){
+    string out;
+    out  =("echo "); 
+    out += password; 
+    out += (" | ");
+    out += ("sudo -S ");
+    out += command;
+    system(out.c_str());
+}
+void sudo(const char * command){
+    string out;
+    out  =("echo "); 
+    out += password; 
+    out += (" | ");
+    out += ("sudo -S ");
+    out += command;
+    system(out.c_str());
+}
+
+//gets the name of the wifi card (will always pick the first one (0 then 1 then 2...))
+string getWifiCard(){
+    string command = "ifconfig ";
+    string tmpflname = "DeleteMe.txt";
+    command += " > " + tmpflname; 
+    system(command.c_str()); // cmd > Deleteme.txt
+    string out;
+    string temp;
+    ifstream fin(tmpflname);
+    fin >> temp;
+    while(fin >> temp && temp.substr(0,4) != "wlan");
+    command = "rm -f " + tmpflname;
+    system(command.c_str());
+    return temp.substr(0, temp.length() - 1); // Removes the :
+}
+
+// initializes (std::map<string,string> devices)
+void make_known_map(){
+    ifstream known(resc + "/known.txt");
+    while(known){
+        string tempName;
+        string fullName;
+        known >> tempName;
+        if (!known) break;
+        if (tempName.substr(tempName.size() - 2) == "n="){
+            known >> tempName;
+            while(tempName.substr(tempName.size() - 2) != "m="){
+                fullName += tempName;
+                known >>tempName;
+            }
+            string tempMac;
+            known >> tempMac;
+            known_devices[tempMac] = fullName;
+        }
+    }
+}
+
+
+
+
+#endif
