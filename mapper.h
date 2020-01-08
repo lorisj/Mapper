@@ -18,8 +18,8 @@ using namespace std;
 // Location of resc folder
 const string resc = "/home/loris/Projects/Mapper/resc";
 
-// amount of time that airodump will run
-const string runTime = "120s";
+// amount of time that airodump will run (default is 60s)
+string runTime = "60s";
 
 string password;
 string user;

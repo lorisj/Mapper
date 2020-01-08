@@ -11,7 +11,12 @@ void setup(){
 
 void cleanup(){
     sudo("rm -f " +resc + "/stored/out* ");
-    sudo("airmon-ng stop " + getWifiCard());
+    string wcard = getWifiCard();
+    if (wcard.substr(wcard.size() - 3) == "mon"){
+        sudo("airmon-ng stop " + getWifiCard());
+    } else{
+        cout << "Card aleready not in mode";
+    }
 }
 
 
@@ -53,6 +58,9 @@ void airodump_read(map<string, int > & scanned_devices, ifstream & outfile){
     }
 
 }
+void check_runtime(){
+    
+}
 
 
 int main(int argc, char** argv){
@@ -63,13 +71,23 @@ int main(int argc, char** argv){
 
 
     //START USER INPUT: ------------------------------------------------------------------------------------------------
-
-    update_password();
+    if (argc >1) {
+        password = *(argv + 1); //can take password as argument
+        if (argc == 3) {
+            runTime = (argv[2]); // sets second argument to be runtime
+            check_runtime();
+        }
+    } else{
+        update_password();
+    }
 
     sudo("airmon-ng start " + getWifiCard());
 
-    sudo("timeout "+ runTime + " airodump-ng -b abg -I 10 -w " + resc + "/stored/out --berlin 60  " + getWifiCard());
+    sudo("timeout "+ runTime + " airodump-ng -b a -I 10 -w " + resc + "/stored/out --berlin 60  " + getWifiCard());
     // program              5ghz band, 1 second interface times, out-01.csv, 30 seconds before station is removed,
+
+    system("clear");
+
     //Make sure this runs and only runs after &runTime  has passed
     ifstream outfile(resc + "/stored/out-01.csv");
 
@@ -89,7 +107,7 @@ int main(int argc, char** argv){
     map<string, int> scanned_devices; //mac address, power
     airodump_read(scanned_devices, outfile);
 
-    //ofstream output("output.txt");
+    ofstream output(resc + "/output.txt");
     system("clear");
     cout << "Finished scanning stations, now printing:" << endl;
     int i = 0;
@@ -108,13 +126,18 @@ int main(int argc, char** argv){
     if (!known_scanned.empty()){
         for(auto item : known_scanned){
             cout << "Name: ";
-            cout << known_devices[item.first] << endl;
+            string tname =  known_devices[item.first];
+            cout << tname << endl;
             cout << "Power: ";
-            cout << item.second << endl;
+            int tpower = item.second;
+            cout << tpower << endl;
+
+            output << "Name: " << tname << endl << "Power: " << tpower << endl << endl;
         }
     }
     else{
         cout << "None" << endl;
+        output << "None" << endl;
     }
 
 
