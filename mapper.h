@@ -34,6 +34,10 @@ string toUpperCase(string input){
     transform(input.begin(), input.end(), input.begin(), ::toupper);
     return input;
 }
+string toLowerCase(string input){
+    transform(input.begin(), input.end(), input.begin(), ::tolower);
+    return input;
+}
 
 
 //Checks whether or not string in is a mac adress
@@ -142,7 +146,7 @@ void make_known_map(){
         if (tempName.substr(tempName.size() - 2) == "n="){
             known >> tempName;
             while(tempName.substr(tempName.size() - 2) != "m="){
-                fullName += tempName;
+                fullName += tempName + " ";
                 known >>tempName;
             }
             string tempMac;

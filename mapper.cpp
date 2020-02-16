@@ -45,7 +45,7 @@ void airodump_read(map<string, int > & scanned_devices, ifstream & outfile){
         outfile >> trash; // date
         outfile >> trash; // time
 
-        outfile >> trash; //Power,
+        outfile >> trash; //-Power,
 
         //Takes the - sign and the comma out of trash and puts it into scanned_devices:
         if (temp != "" && trash != ""){
@@ -58,8 +58,13 @@ void airodump_read(map<string, int > & scanned_devices, ifstream & outfile){
     }
 
 }
-void check_runtime(){
-    
+bool check_runtime(){
+    string unit = runTime.substr(runTime.length()-1);
+    if ( !(unit == "m" || unit == "s" || unit == "h" )) return false;
+    for (size_t i = 0; i < runTime.length() - 1; i++)
+        if (isdigit(runTime[i]) == 0)
+            return false;
+    return true;
 }
 
 
@@ -74,14 +79,13 @@ int main(int argc, char** argv){
     if (argc >1) {
         password = *(argv + 1); //can take password as argument
         if (argc == 3) {
-            runTime = (argv[2]); // sets second argument to be runtime
-            check_runtime();
+            runTime = toLowerCase(string (argv[2]) ); // sets second argument to be runtime
+            if (!check_runtime()) runTime = "60s";
         }
     } else{
         update_password();
     }
-
-    sudo("airmon-ng start " + getWifiCard());
+    sudo("airmon-ng start " + getWifiCard() );
 
     sudo("timeout "+ runTime + " airodump-ng -b a -I 10 -w " + resc + "/stored/out --berlin 60  " + getWifiCard());
     // program              5ghz band, 1 second interface times, out-01.csv, 30 seconds before station is removed,
@@ -101,9 +105,8 @@ int main(int argc, char** argv){
     if (!outfile){
         return finish(3);
     }
+
     //outfile should now read stations
-
-
     map<string, int> scanned_devices; //mac address, power
     airodump_read(scanned_devices, outfile);
 
@@ -114,7 +117,7 @@ int main(int argc, char** argv){
         vector<pair<string , int>> known_scanned;
     for(auto item : scanned_devices){
         cout << i << "m= " << item.first << endl;
-        cout << i << "p = " << item.second << endl;
+        cout << i << "p= " << item.second << endl;
         cout << endl;
         ++i;
         if (!known_devices[item.first].empty()){
@@ -130,7 +133,7 @@ int main(int argc, char** argv){
             cout << tname << endl;
             cout << "Power: ";
             int tpower = item.second;
-            cout << tpower << endl;
+            cout << tpower << endl << endl;
 
             output << "Name: " << tname << endl << "Power: " << tpower << endl << endl;
         }
