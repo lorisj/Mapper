@@ -48,7 +48,7 @@ void airodump_read(map<string, int > & scanned_devices, ifstream & outfile){
         outfile >> trash; //-Power,
 
         //Takes the - sign and the comma out of trash and puts it into scanned_devices:
-        if (temp != "" && trash != ""){
+        if (!temp.empty() && !trash.empty()){
             scanned_devices[temp.substr(0, temp.size() - 1)] =
                     stoi(trash.substr(1, trash.length() -1) );
         }
@@ -115,7 +115,7 @@ int main(int argc, char** argv){
     cout << "Finished scanning stations, now printing:" << endl;
     int i = 0;
         vector<pair<string , int>> known_scanned;
-    for(auto item : scanned_devices){
+    for(const auto& item : scanned_devices){
         cout << i << "m= " << item.first << endl;
         cout << i << "p= " << item.second << endl;
         cout << endl;
@@ -127,7 +127,7 @@ int main(int argc, char** argv){
     cout << endl;
     cout << "Known devices present:" << endl;
     if (!known_scanned.empty()){
-        for(auto item : known_scanned){
+        for(const auto& item : known_scanned){
             cout << "Name: ";
             string tname =  known_devices[item.first];
             cout << tname << endl;
