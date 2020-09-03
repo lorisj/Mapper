@@ -91,15 +91,15 @@ You should put in your arguments just as if you would add options normally.
 }
 
 # Examples and default output format
- $ mapper -m FF:FF:FF:FF:FF:FF
+ $mapper -m FF:FF:FF:FF:FF:FF
      
      {
           Mac: FF:FF:FF:FF:FF:FF
           Power: -41
+          
      }
 
-If the device is not found:
- $ mapper -m FF:FF:FF:FF:FF:FF     
+If the device is not found:   
      
      {
      
@@ -109,10 +109,10 @@ If the device is not found:
      
 
 
- $ mapper -u -k sample_known.txt -i wlan0
+ $mapper -u -k sample_known.txt -i wlan0
 
      {
-          "devices" : 5
+          "devices" : 6
 
           "unkown" : {
                "Mac" : "FF:FF:FF:FF:FF:FE"
@@ -126,24 +126,60 @@ If the device is not found:
 
                "Mac" : "FF:FF:FF:FF:FF:FC"
                "Power" : -56
+               
           }
+          
           "known" : {
                "Loris' ubuntu laptop"{ 
                     "Mac" : "00:00:00:00:00:00"
                     "Power" : -23
+                    
                }
+               
+               "ESP32 light controller"{ 
+                    "Mac" : "FF:FF:FF:FF:FF:FF"
+                    "Power" : -52
+                    
+               }
+               
           }
+          
+     }
+     
+ $mapper -k sample_known.txt -i wlan0
+
+     {
+          "devices" : 2
+          
+          "known" : {
+               "Loris' ubuntu laptop"{ 
+                    "Mac" : "00:00:00:00:00:00"
+                    "Power" : -23
+                    
+               }
+               
+               "ESP32 light controller"{ 
+                    "Mac" : "FF:FF:FF:FF:FF:FF"
+                    "Power" : -52
+                    
+               }
+               
+          }
+          
      }
 
 
 
-sample_known.txt{
-0n= Loris' ubuntu laptop
-0m= 00:00:00:00:00:00
+sample_known.txt
 
-1n= ESP32 light controller
-1m= FF:FF:FF:FF:FF:FF
-}
+     0n= Loris' ubuntu laptop
+     0m= 00:00:00:00:00:00
+
+     1n= ESP32 light controller
+     1m= FF:FF:FF:FF:FF:FF
+     
+     2n= Loris' phone
+     2m= 11:11:11:11:11:11
 
 # Simplified output format (-s --simple)
 
