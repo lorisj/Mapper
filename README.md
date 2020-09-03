@@ -175,8 +175,8 @@ $sudo mapper -k sample_known.txt -i wlan0
 
 
 # Simplified output format (-s --simple)
-The simplified output format is as follows:
-$sudo mapper -u -k sample_known.txt -i wlan0
+The simplified output format is as follows for the given command:
+ $sudo mapper -u -k sample_known.txt -i wlan0
      
      u 3
      0m= FF:FF:FF:FF:FF:FF 
