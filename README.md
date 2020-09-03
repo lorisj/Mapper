@@ -69,29 +69,27 @@ Mapper can be run with no options! However, the program will make a couple of as
 
 # Known Devices List file format
 
-     The list stores the mac addresses in the following format {
+The list stores the mac addresses in the following format:
 
      0n= Name of a device here with or without spaces
      0m= FF:FF:FF:FF:FF:FF
 
      1n= Name of another device here
-     1n= 00:00:00:00:00:00
-
+     1m= 00:00:00:00:00:00
+     
      ...
 
-     } > known.txt
 
-You may rename this to be anything but I will continue to call this file known.txt.
-Also Mapper will attempt to locate "known.txt" in the same directory as where the executable was run from if no input file is specified with the flag "-k"
+You may rename this to be anything but I will refrence this file as known.txt
+Mapper will attempt to locate "known.txt" in the same directory as where the executable was run from if no input file is specified with the flag "-k" or "--known".
 
 # Config file format
 You should put in your arguments just as if you would add options normally.
-{
--option1 <param1> -option2 <param2>
-}
+
+     -option1 <param1> -option2 <param2> -option3 -option4
 
 # Examples and default output format
- $mapper -m FF:FF:FF:FF:FF:FF
+$sudo mapper -m FF:FF:FF:FF:FF:FF -i wlan0
      
      {
           Mac: FF:FF:FF:FF:FF:FF
@@ -109,7 +107,7 @@ If the device is not found:
      
 
 
- $mapper -u -k sample_known.txt -i wlan0
+$sudo mapper -u -k sample_known.txt -i wlan0
 
      {
           "devices" : 6
@@ -146,7 +144,7 @@ If the device is not found:
           
      }
      
- $mapper -k sample_known.txt -i wlan0
+$sudo mapper -k sample_known.txt -i wlan0
 
      {
           "devices" : 2
@@ -182,6 +180,7 @@ sample_known.txt
      2m= 11:11:11:11:11:11
 
 # Simplified output format (-s --simple)
+
 
 
 
