@@ -186,11 +186,30 @@ $sudo mapper -k sample_known.txt -i wlan0
 
 
 # Simplified output format (-s --simple)
-The simplified output format is as follows for the given command:
+The simplified output format is as follows <> signify outputs: (Everything before k= is ommited if the -u option is not present)
+
+     u= <number of unknown devices>
+     0m= <mac address>
+     0p= <power>
+     
+     1m= <mac address>
+     1p= <power>
+     
+     
+     k= <number of known devices>
+     0n= <name of device from known.txt>
+     0m= <mac address>
+     0p= <power>
+     
+     1n= <name of device from known.txt>
+     1m= <mac address>
+     1p= <power>
+     
+     
  
    $sudo mapper -u -k sample_known.txt -i wlan0
      
-     u 3
+     u= 3
      0m= FF:FF:FF:FF:FF:FF 
      0p= -76
      
@@ -201,7 +220,7 @@ The simplified output format is as follows for the given command:
      2p= -37
      
 
-     k 2
+     k= 2
      0n= Loris' phone
      0m= 11:11:11:11:11:11
      0p= -13
@@ -209,7 +228,18 @@ The simplified output format is as follows for the given command:
      1n= Loris' ubuntu laptop
      1m= 00:00:00:00:00:00
      1p= -34
+    
+   $sudo mapper -k sample_known.txt -i wlan0
+ 
+     k= 2
+     0n= Loris' phone
+     0m= 11:11:11:11:11:11
+     0p= -13
      
+     1n= Loris' ubuntu laptop
+     1m= 00:00:00:00:00:00
+     1p= -34
+         
      
 
 
