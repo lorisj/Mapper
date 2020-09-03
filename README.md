@@ -89,6 +89,10 @@ You should put in your arguments just as if you would add options normally.
      -option1 <param1> -option2 <param2> -option3 -option4
 
 # Examples and default output format
+
+Mapper by default outputs the contents as a JSON object. The format is the examples below:
+
+
 $sudo mapper -m FF:FF:FF:FF:FF:FF -i wlan0
      
      {
@@ -168,6 +172,36 @@ $sudo mapper -k sample_known.txt -i wlan0
 
 
 
+
+
+# Simplified output format (-s --simple)
+The simplified output format is as follows:
+$sudo mapper -u -k sample_known.txt -i wlan0
+     
+     u 3
+     0m= FF:FF:FF:FF:FF:FF 
+     0p= -76
+     
+     1m= 11:11:CC:CC:CC:CC 
+     1p= -40
+     
+     2m= 22:22:22:22:22:22 
+     2p= -37
+     
+
+     k 2
+     0n= Loris' phone
+     0m= 11:11:11:11:11:11
+     0p= -13
+     
+     1n= Loris' ubuntu laptop
+     1m= 00:00:00:00:00:00
+     1p= -34
+     
+     
+
+
+
 sample_known.txt
 
      0n= Loris' ubuntu laptop
@@ -178,10 +212,6 @@ sample_known.txt
      
      2n= Loris' phone
      2m= 11:11:11:11:11:11
-
-# Simplified output format (-s --simple)
-
-
-
+     
 
 
