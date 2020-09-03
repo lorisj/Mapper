@@ -112,11 +112,9 @@ $sudo mapper -m FF:FF:FF:FF:FF:FF -i wlan0
           
      }
 
-If the device is not found:   
+If the device is not found, the program outputs an empty JSON object:   
      
      {
-     
-     
      }
      
      
@@ -181,7 +179,32 @@ $sudo mapper -k sample_known.txt -i wlan0
           
      }
 
+If no known devices are found then the known object is empty, and the same goes for unknown devices:
 
+$sudo mapper -u -k sample_known.txt -i wlan0
+     
+     {
+          "devices" : 4
+
+          "unkown" : {
+               "Mac" : "FF:FF:FF:FF:FF:FE"
+               "Power" : -40
+
+               "Mac" : "FF:FF:FF:FF:FF:FE"
+               "Power" : -19
+
+               "Mac" : "FF:FF:FF:FF:FF:FD"
+               "Power" : -87
+
+               "Mac" : "FF:FF:FF:FF:FF:FC"
+               "Power" : -56
+               
+          }
+          
+          "known" : {
+          }
+          
+     }
 
 
 
