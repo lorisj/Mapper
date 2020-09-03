@@ -91,8 +91,7 @@ You should put in your arguments just as if you would add options normally.
 }
 
 # Examples and default output format
-
-    $ mapper -m FF:FF:FF:FF:FF:FF
+ $ mapper -m FF:FF:FF:FF:FF:FF
      ---
      **output**:
      {
@@ -102,6 +101,7 @@ You should put in your arguments just as if you would add options normally.
      ---
 
 If the device is not found:
+ $ mapper -m FF:FF:FF:FF:FF:FF     
      ---
      **output**:
      {
@@ -109,7 +109,7 @@ If the device is not found:
      ---
 
 
-     $ mapper -u -k sample_known.txt -i wlan0
+ $ mapper -u -k sample_known.txt -i wlan0
 
 ---
 **output**:
