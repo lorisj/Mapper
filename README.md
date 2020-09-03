@@ -92,24 +92,24 @@ You should put in your arguments just as if you would add options normally.
 
 # Examples and default output format
 
-$ mapper -m FF:FF:FF:FF:FF:FF
----
-**output**:
-{
-     Mac: FF:FF:FF:FF:FF:FF
-     Power: -41
-}
----
+    $ mapper -m FF:FF:FF:FF:FF:FF
+     ---
+     **output**:
+     {
+          Mac: FF:FF:FF:FF:FF:FF
+          Power: -41
+     }
+     ---
 
 If the device is not found:
----
-**output**:
-{
-}
----
+     ---
+     **output**:
+     {
+     }
+     ---
 
 
-$ mapper -u -k sample_known.txt -i wlan0
+     $ mapper -u -k sample_known.txt -i wlan0
 
 ---
 **output**:
