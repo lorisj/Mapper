@@ -78,6 +78,17 @@ The list stores the mac addresses in the following format:
      1m= 00:00:00:00:00:00
      
      ...
+     
+sample_known.txt:
+
+     0n= Loris' ubuntu laptop
+     0m= 00:00:00:00:00:00
+
+     1n= ESP32 light controller
+     1m= FF:FF:FF:FF:FF:FF
+     
+     2n= Loris' phone
+     2m= 11:11:11:11:11:11
 
 
 You may rename this to be anything but I will refrence this file as known.txt
@@ -203,16 +214,7 @@ The simplified output format is as follows for the given command:
 
 
 
-sample_known.txt
 
-     0n= Loris' ubuntu laptop
-     0m= 00:00:00:00:00:00
-
-     1n= ESP32 light controller
-     1m= FF:FF:FF:FF:FF:FF
-     
-     2n= Loris' phone
-     2m= 11:11:11:11:11:11
      
 
 
