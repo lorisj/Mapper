@@ -92,51 +92,49 @@ You should put in your arguments just as if you would add options normally.
 
 # Examples and default output format
  $ mapper -m FF:FF:FF:FF:FF:FF
-     ---
-     **output**:
+     
      {
           Mac: FF:FF:FF:FF:FF:FF
           Power: -41
      }
-     ---
 
 If the device is not found:
  $ mapper -m FF:FF:FF:FF:FF:FF     
-     ---
-     **output**:
+     
      {
+     
+     
      }
-     ---
+     
+     
 
 
  $ mapper -u -k sample_known.txt -i wlan0
 
----
-**output**:
-{
-     "devices" : 5
-     
-     "unkown" : {
-          "Mac" : "FF:FF:FF:FF:FF:FE"
-          "Power" : -40
+     {
+          "devices" : 5
 
-          "Mac" : "FF:FF:FF:FF:FF:FE"
-          "Power" : -19
+          "unkown" : {
+               "Mac" : "FF:FF:FF:FF:FF:FE"
+               "Power" : -40
 
-          "Mac" : "FF:FF:FF:FF:FF:FD"
-          "Power" : -87
+               "Mac" : "FF:FF:FF:FF:FF:FE"
+               "Power" : -19
 
-          "Mac" : "FF:FF:FF:FF:FF:FC"
-          "Power" : -56
-     }
-     "known" : {
-          "Loris' ubuntu laptop"{ 
-               "Mac" : "00:00:00:00:00:00"
-               "Power" : -23
+               "Mac" : "FF:FF:FF:FF:FF:FD"
+               "Power" : -87
+
+               "Mac" : "FF:FF:FF:FF:FF:FC"
+               "Power" : -56
+          }
+          "known" : {
+               "Loris' ubuntu laptop"{ 
+                    "Mac" : "00:00:00:00:00:00"
+                    "Power" : -23
+               }
           }
      }
-}
----
+
 
 
 sample_known.txt{
