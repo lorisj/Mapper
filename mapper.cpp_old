@@ -1,0 +1,158 @@
+#include "mapper.h"
+
+using namespace std;
+
+
+void setup(){
+    system("clear");
+    user = getCommandOutput("whoami");
+    make_known_map();// initializes (std::map<string,string> devices)
+}
+
+void cleanup(){
+    sudo("rm -f " +resc + "/stored/out* ");
+    string wcard = getWifiCard();
+    if (wcard.substr(wcard.size() - 3) == "mon"){
+        sudo("airmon-ng stop " + getWifiCard());
+    } else{
+        cout << "Card aleready not in mode";
+    }
+}
+
+
+//Gets password from the user
+void update_password(){
+    cout<<"ENTER SUDO PASSWORD FOR ACCOUNT \"" << user <<"\":";
+    cin >> password;
+    system("clear");
+}
+
+int finish(const int  & ercode){
+    cleanup();
+    return ercode;
+}
+void airodump_read(map<string, int > & scanned_devices, ifstream & outfile){
+    while(outfile){
+        string temp;
+        string trash;
+        outfile >> temp; // Station MAC,
+
+        // First time seen,
+        outfile >> trash; // date
+        outfile >> trash; // time
+
+        // Last time seen
+        outfile >> trash; // date
+        outfile >> trash; // time
+
+        outfile >> trash; //-Power,
+
+        //Takes the - sign and the comma out of trash and puts it into scanned_devices:
+        if (!temp.empty() && !trash.empty()){
+            scanned_devices[temp.substr(0, temp.size() - 1)] =
+                    stoi(trash.substr(1, trash.length() -1) );
+        }
+
+        //Continues the ifstream until a new line is present.
+        getline(outfile, trash);
+    }
+
+}
+bool set_runtime(string runtime_in){
+    string unit = runtime_in.substr(runtime_in.length()-1);
+    if ( !(unit == "m" || unit == "s" || unit == "h" )) return false;
+    for (size_t i = 0; i < runtime_in.length() - 1; i++)
+        if (isdigit(runtime_in[i]) == 0)
+            return false;
+    runTime = runtime_in;
+    return true;
+}
+
+
+int main(int argc, char** argv){
+    //SETUP :: \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\;
+
+    setup();
+
+
+
+    //START USER INPUT: ------------------------------------------------------------------------------------------------
+    if (argc > 1) {
+        // Checks
+        // runtime argument
+        bool valid_arg = false;
+        for(int i = 1; i < argc; ++i){
+            const char * c = argv[i];
+            if(string(c) == "-r" && argc > i && set_runtime(c+1)) valid_arg = true;
+
+            else if(string(c) == "-o"){
+                if(argc > i) writefile = string(c + 1);
+
+                else cout << "Please specify an output file name" << endl;
+            }
+
+        }
+        if (!valid_arg) cout << R"(Invalid runtime argument, valid examples include: "50s", "2m", "5h"  )";
+    }
+
+            //update_password();
+    cout << runTime << endl;
+    sudo("airmon-ng start " + getWifiCard() );
+
+    sudo("timeout -k "+ runTime +" " + runTime +  " airodump-ng -b abg -I 10 -w " + resc + "/stored/out --berlin 60  " + getWifiCard());
+    // program              all bands, 1 second interface times, out-01.csv, 30 seconds before station is removed,
+
+    system("clear");
+
+    //Make sure this runs and only runs after &runTime  has passed
+    ifstream aero_out_file(resc + "/stored/out-01.csv");
+
+    string trash;
+    string tempMac;
+    string power;
+
+    while(aero_out_file && trash != "ESSIDs"){
+        aero_out_file >> trash;
+    }
+    if (!aero_out_file){
+        return finish(3);
+    }
+
+    //aero_out_file should now read stations
+    map<string, int> scanned_devices; //mac address, power
+    airodump_read(scanned_devices, aero_out_file);
+
+    ofstream output(resc + writefile);
+    system("clear");
+    cout << "Finished scanning stations, now printing:" << endl;
+    int i = 0;
+        vector<pair<string , int>> known_scanned;
+    for(const auto& item : scanned_devices){
+        cout << i << "m= " << item.first << endl;
+        cout << i << "p= " << item.second << endl;
+        cout << endl;
+        ++i;
+        if (!known_devices[item.first].empty()){
+            known_scanned.emplace_back(item);
+        }
+    }
+    cout << endl;
+    cout << "Known devices present:" << endl;
+    if (!known_scanned.empty()){
+        for(const auto& item : known_scanned){
+            string tname =  known_devices[item.first];
+            int tpower = item.second;
+            cout << "Name: " << tname << endl << "Power: " << tpower << endl << endl;
+            if(!writefile.empty()) output << "Name: " << tname << endl << "Power: " << tpower << endl << endl;
+        }
+    }
+    else{
+        cout << "None" << endl;
+        if(!writefile.empty())  output << "None" << endl;
+    }
+
+
+    return finish(0);
+}
+
+
