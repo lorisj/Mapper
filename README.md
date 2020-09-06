@@ -193,7 +193,7 @@ $sudo mapper -k sample_known.txt -i wlan0
                
                "ESP32 light controller"{ 
                     "Mac" : "FF:FF:FF:FF:FF:FF"
-                    "Vendor" : "Apple Inc."
+                    "Vendor" : "Espressif Systems"
                     "Power" : -52
                     
                }
