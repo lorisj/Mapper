@@ -101,7 +101,7 @@ You should put in your arguments just as if you would add options normally.
 
 # Examples and default output format
 
-Mapper by default outputs the contents as a JSON object. The format is the examples below:
+Mapper by default outputs the contents as a JSON object. The format is in the examples below:
 
 
 $sudo mapper -m FF:FF:FF:FF:FF:FF -i wlan0
