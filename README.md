@@ -18,6 +18,7 @@ First the program puts the specified wireless interface into monitor mode, then 
      $ mapper [options]
      
 # Important information
+This program is currently being reworked, if you wish to try it out, rename and compile mapper.h_old and mapper.cpp_old!
 This program puts your wireless interface into monitor mode, so you will not be able to connect to the internet with the specified wireless interface while the program is running. It will however attempt to put the interface out of monitor mode before the program is finished, however if it crashes midway, or if there is an interrupt, you will have to run the following command in order to take your interface out of monitor mode:
      
      $ sudo airmon-ng stop <interface name>
