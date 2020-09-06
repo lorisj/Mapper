@@ -180,27 +180,28 @@ $sudo mapper -k sample_known.txt -i wlan0
      }
  $sudo mapper -v -k sample_known.txt -i wlan0
 
- {
-      "devices" : 2
+     {
+          "devices" : 2
+          
+          "known" : {
+               "Loris' ubuntu laptop"{ 
+                    "Mac" : "00:00:00:00:00:00"
+                    "Vendor" : "Intel"
+                    "Power" : -23
+                    
+               }
+               
+               "ESP32 light controller"{ 
+                    "Mac" : "FF:FF:FF:FF:FF:FF"
+                    "Vendor" : "Apple Inc."
+                    "Power" : -52
+                    
+               }
+               
+          }
+          
+     }
  
-      "known" : {
-           "Loris' ubuntu laptop"{ 
-                "Mac" : "00:00:00:00:00:00"
-                "Power" : -23
-                "Vendor" : "Loris' electronics"
- 
-           }
- 
-           "ESP32 light controller"{ 
-                "Mac" : "FF:FF:FF:FF:FF:FF"
-                "Power" : -52
-                "Vendor" : "Apple Inc."
- 
-           }
- 
-      }
- 
- }
 
 If no known devices are found then the known object is empty, and the same goes for unknown devices:
 
