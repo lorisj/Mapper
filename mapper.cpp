@@ -1,3 +1,6 @@
+// This is a work in progress, for a working program, compile mapper.cpp_old and mapper.h_old
+
+
 #include "mapper.h"
 using namespace std;
 //gets the name of the wifi card (will always pick the first one (0 then 1 then 2...))
