@@ -1,3 +1,5 @@
+Quick note: The project is being reworked, for a working example, rename and compile mapper.cpp_old and mapper.h_old.
+
 # Mapper and its applications
 Mapper is an easy to use command line utility for UNIX systems that can tell you the power level (https://en.wikipedia.org/wiki/Received_signal_strength_indication) of a specified mac address (or multiple addresses) from the device that Mapper is being run on. 
 This is intended for users of Kali Linux, specifically the ARM version of Kali running on raspberry pis, however it can probably run on any linux system as long as it meets the requirements listed below.
